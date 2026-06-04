@@ -6,6 +6,8 @@ export default function Gallery() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+  const [uploadSuccess, setUploadSuccess] = useState('');
 
   const fetchGallery = async () => {
     setLoading(true);
@@ -28,11 +30,20 @@ export default function Gallery() {
     if (files.length === 0) return;
 
     setUploading(true);
+    setUploadError('');
+    setUploadSuccess('');
     let successCount = 0;
+    let failCount = 0;
 
     for (const file of files) {
-      if (!file.type.startsWith('image/')) continue;
-      if (file.size > 5 * 1024 * 1024) continue;
+      if (!file.type.startsWith('image/')) {
+        failCount++;
+        continue;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        failCount++;
+        continue;
+      }
 
       const formData = new FormData();
       formData.append('image', file);
@@ -41,16 +52,22 @@ export default function Gallery() {
       formData.append('is_active', true);
 
       try {
-        await API.post('/gallery/', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        await API.post('/gallery/', formData);
         successCount++;
-      } catch {
-        // Skip failed uploads
+      } catch (err) {
+        failCount++;
+        const msg = err.response?.data?.image?.[0] || err.response?.data?.detail || err.message;
+        setUploadError(prev => prev ? `${prev}; ${file.name}: ${msg}` : `${file.name}: ${msg}`);
       }
     }
 
-    if (successCount > 0) fetchGallery();
+    if (successCount > 0) {
+      fetchGallery();
+      setUploadSuccess(`${successCount} image(s) uploaded successfully.`);
+    }
+    if (failCount > 0 && successCount === 0) {
+      setUploadError(`${failCount} file(s) failed to upload. ${uploadError}`);
+    }
     setUploading(false);
     e.target.value = ''; // Reset file input
   };
@@ -146,6 +163,27 @@ export default function Gallery() {
           </p>
         </div>
       </div>
+
+      {/* Upload feedback */}
+      {uploadSuccess && (
+        <div className="bg-green-50 border border-green-200 text-green-700 rounded-xl p-4 mb-6 flex items-center justify-between">
+          <span>{uploadSuccess}</span>
+          <button onClick={() => setUploadSuccess('')} className="text-green-500 hover:text-green-700">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+      {uploadError && (
+        <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 mb-6 flex items-start justify-between gap-3">
+          <div>
+            <p className="font-medium">Upload failed</p>
+            <p className="text-sm text-red-600 mt-1">{uploadError}</p>
+          </div>
+          <button onClick={() => setUploadError('')} className="text-red-500 hover:text-red-700 shrink-0">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
 
       {/* Gallery grid */}
       {loading ? (

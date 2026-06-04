@@ -127,13 +127,9 @@ export default function DoctorForm() {
     try {
       if (isEdit) {
         // Use PATCH with FormData — need to set content header for multipart
-        await API.patch(`/doctors/${id}/`, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        await API.patch(`/doctors/${id}/`, formData);
       } else {
-        await API.post('/doctors/', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        await API.post('/doctors/', formData);
       }
       navigate('/admin/doctors');
     } catch (err) {

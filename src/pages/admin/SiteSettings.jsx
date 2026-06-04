@@ -96,9 +96,7 @@ export default function SiteSettings() {
     }
 
     try {
-      await API.patch('/settings/', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      await API.patch('/settings/', formData);
       setSaved(true);
       if (hospitalImage) {
         // Re-fetch to get the new image URL
