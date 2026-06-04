@@ -40,7 +40,7 @@ export default function Gallery() {
         failCount++;
         continue;
       }
-      if (file.size > 5 * 1024 * 1024) {
+      if (file.size > 1 * 1024 * 1024) {
         failCount++;
         continue;
       }

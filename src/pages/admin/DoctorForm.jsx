@@ -66,9 +66,9 @@ export default function DoctorForm() {
       setErrors((prev) => ({ ...prev, photo: 'Please select an image file' }));
       return;
     }
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setErrors((prev) => ({ ...prev, photo: 'Image must be under 5MB' }));
+    // Validate file size (max 1MB)
+    if (file.size > 1 * 1024 * 1024) {
+      setErrors((prev) => ({ ...prev, photo: 'Image must be under 1MB' }));
       return;
     }
 
@@ -208,7 +208,7 @@ export default function DoctorForm() {
             <label className="flex flex-col items-center justify-center w-40 h-40 rounded-2xl border-2 border-dashed border-gray-300 cursor-pointer hover:border-primary-400 hover:bg-primary-50/50 transition">
               <Upload className="w-8 h-8 text-gray-400 mb-2" />
               <span className="text-xs text-gray-500 font-medium">Upload Photo</span>
-              <span className="text-[10px] text-gray-400 mt-0.5">Max 5MB</span>
+              <span className="text-[10px] text-gray-400 mt-0.5">Max 1MB</span>
               <input
                 type="file"
                 accept="image/*"

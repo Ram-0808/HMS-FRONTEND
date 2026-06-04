@@ -61,8 +61,8 @@ export default function SiteSettings() {
       setErrors((prev) => ({ ...prev, hospital_image: 'Please select an image file' }));
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-      setErrors((prev) => ({ ...prev, hospital_image: 'Image must be under 5MB' }));
+    if (file.size > 1 * 1024 * 1024) {
+      setErrors((prev) => ({ ...prev, hospital_image: 'Image must be under 1MB' }));
       return;
     }
     setHospitalImage(file);
@@ -185,7 +185,7 @@ export default function SiteSettings() {
             <label className="flex flex-col items-center justify-center w-full max-w-md h-52 rounded-xl border-2 border-dashed border-gray-300 cursor-pointer hover:border-primary-400 hover:bg-primary-50/50 transition mb-3">
               <Upload className="w-10 h-10 text-gray-400 mb-2" />
               <span className="text-sm text-gray-500 font-medium">Upload Hospital Photo</span>
-              <span className="text-xs text-gray-400 mt-0.5">JPG or PNG, max 5MB</span>
+              <span className="text-xs text-gray-400 mt-0.5">JPG or PNG, max 1MB</span>
               <input type="file" accept="image/*" onChange={handleImageSelect} className="hidden" />
             </label>
           )}
