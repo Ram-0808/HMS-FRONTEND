@@ -8,6 +8,7 @@ import {
   Settings,
   ImageIcon,
   LogOut,
+  Pill,
 } from 'lucide-react';
 
 const SIDEBAR_LINKS = [
@@ -15,6 +16,7 @@ const SIDEBAR_LINKS = [
   { to: '/admin/patients', icon: Users, label: 'Patients' },
   { to: '/admin/patients/new', icon: UserPlus, label: 'Add Patient' },
   { to: '/admin/doctors', icon: Stethoscope, label: 'Doctors' },
+  { to: '/admin/pharmacy', icon: Pill, label: 'Pharmacy' },
   { to: '/admin/gallery', icon: ImageIcon, label: 'Gallery' },
   { to: '/admin/settings', icon: Settings, label: 'Settings' },
 ];

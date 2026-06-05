@@ -20,6 +20,17 @@ import DoctorForm from './pages/admin/DoctorForm';
 import Gallery from './pages/admin/Gallery';
 import SiteSettings from './pages/admin/SiteSettings';
 
+// Pharmacy pages
+import PharmacyDashboard from './pages/admin/pharmacy/PharmacyDashboard';
+import MedicineList from './pages/admin/pharmacy/MedicineList';
+import MedicineForm from './pages/admin/pharmacy/MedicineForm';
+import VendorList from './pages/admin/pharmacy/VendorList';
+import VendorForm from './pages/admin/pharmacy/VendorForm';
+import BatchList from './pages/admin/pharmacy/BatchList';
+import BatchForm from './pages/admin/pharmacy/BatchForm';
+import SaleList from './pages/admin/pharmacy/SaleList';
+import SaleForm from './pages/admin/pharmacy/SaleForm';
+
 export default function App() {
   return (
     <Routes>
@@ -55,6 +66,17 @@ export default function App() {
         <Route path="doctors/:id/edit" element={<DoctorForm />} />
         <Route path="gallery" element={<Gallery />} />
         <Route path="settings" element={<SiteSettings />} />
+        <Route path="pharmacy" element={<PharmacyDashboard />} />
+        <Route path="pharmacy/medicines" element={<MedicineList />} />
+        <Route path="pharmacy/medicines/new" element={<MedicineForm />} />
+        <Route path="pharmacy/medicines/:id/edit" element={<MedicineForm />} />
+        <Route path="pharmacy/vendors" element={<VendorList />} />
+        <Route path="pharmacy/vendors/new" element={<VendorForm />} />
+        <Route path="pharmacy/vendors/:id/edit" element={<VendorForm />} />
+        <Route path="pharmacy/batches" element={<BatchList />} />
+        <Route path="pharmacy/batches/new" element={<BatchForm />} />
+        <Route path="pharmacy/sales" element={<SaleList />} />
+        <Route path="pharmacy/sales/new" element={<SaleForm />} />
       </Route>
     </Routes>
   );

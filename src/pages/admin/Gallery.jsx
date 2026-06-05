@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Upload, Trash2, GripVertical, ImageIcon, X, ArrowUp, ArrowDown } from 'lucide-react';
+import { Upload, Trash2, GripVertical, ImageIcon, X, ArrowUp, ArrowDown, ChevronLeft, ChevronRight, Eye, EyeOff } from 'lucide-react';
 import API from '../../services/api';
+import ViewToggle from '../../components/ViewToggle';
 
 export default function Gallery() {
   const [images, setImages] = useState([]);
@@ -8,12 +9,18 @@ export default function Gallery() {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
   const [uploadSuccess, setUploadSuccess] = useState('');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [viewMode, setViewMode] = useState('list');
 
   const fetchGallery = async () => {
     setLoading(true);
     try {
-      const { data } = await API.get('/gallery/');
+      const { data } = await API.get(`/gallery/?page=${page}`);
       setImages(data.results || data);
+      if (data.count !== undefined) {
+        setTotalPages(Math.ceil(data.count / 20));
+      }
     } catch {
       setImages([]);
     } finally {
@@ -23,7 +30,7 @@ export default function Gallery() {
 
   useEffect(() => {
     fetchGallery();
-  }, []);
+  }, [page]);
 
   const handleUpload = async (e) => {
     const files = Array.from(e.target.files);
@@ -62,7 +69,11 @@ export default function Gallery() {
     }
 
     if (successCount > 0) {
-      fetchGallery();
+      if (page === 1) {
+        fetchGallery();
+      } else {
+        setPage(1);
+      }
       setUploadSuccess(`${successCount} image(s) uploaded successfully.`);
     }
     if (failCount > 0 && successCount === 0) {
@@ -138,18 +149,21 @@ export default function Gallery() {
             Manage photos for the Services page carousel
           </p>
         </div>
-        <label className="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors cursor-pointer">
-          <Upload className="w-4 h-4" />
-          {uploading ? 'Uploading...' : 'Upload Photos'}
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleUpload}
-            className="hidden"
-            disabled={uploading}
-          />
-        </label>
+        <div className="flex items-center gap-3">
+          <ViewToggle view={viewMode} onChange={(v) => { setViewMode(v); setPage(1); }} />
+          <label className="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors cursor-pointer">
+            <Upload className="w-4 h-4" />
+            {uploading ? 'Uploading...' : 'Upload Photos'}
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleUpload}
+              className="hidden"
+              disabled={uploading}
+            />
+          </label>
+        </div>
       </div>
 
       {/* Upload hint */}
@@ -185,7 +199,7 @@ export default function Gallery() {
         </div>
       )}
 
-      {/* Gallery grid */}
+      {/* Gallery */}
       {loading ? (
         <div className="flex items-center justify-center py-16">
           <div className="animate-spin w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full" />
@@ -196,7 +210,8 @@ export default function Gallery() {
           <p className="text-gray-400 font-medium">No gallery photos yet</p>
           <p className="text-sm text-gray-300 mt-1">Upload photos to display them in the carousel</p>
         </div>
-      ) : (
+      ) : viewMode === 'list' ? (
+        /* List view */
         <div className="space-y-3">
           {images.map((img, index) => (
             <div
@@ -273,6 +288,75 @@ export default function Gallery() {
               </div>
             </div>
           ))}
+        </div>
+      ) : (
+        /* Grid view */
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+          {images.map((img) => (
+            <div
+              key={img.id}
+              className={`bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow ${
+                !img.is_active ? 'opacity-60' : ''
+              }`}
+            >
+              {/* Image thumbnail */}
+              <div className="aspect-square">
+                <img
+                  src={img.image}
+                  alt={img.caption || ''}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </div>
+
+              {/* Caption + actions */}
+              <div className="p-3">
+                <p className="text-sm text-gray-700 truncate">
+                  {img.caption || <span className="text-gray-400 italic">No caption</span>}
+                </p>
+                <div className="flex items-center gap-2 mt-2">
+                  <button
+                    onClick={() => handleToggleActive(img.id, img.is_active)}
+                    className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium transition ${
+                      img.is_active
+                        ? 'bg-green-50 text-green-700 hover:bg-green-100'
+                        : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                    }`}
+                  >
+                    {img.is_active ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                    {img.is_active ? 'Visible' : 'Hidden'}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(img.id)}
+                    className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition"
+                    title="Delete"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-4 mt-6">
+          <button
+            onClick={() => setPage(p => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition"
+          >
+            <ChevronLeft className="w-5 h-5 text-gray-600" />
+          </button>
+          <span className="text-sm text-gray-600">Page {page} of {totalPages}</span>
+          <button
+            onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition"
+          >
+            <ChevronRight className="w-5 h-5 text-gray-600" />
+          </button>
         </div>
       )}
     </div>
