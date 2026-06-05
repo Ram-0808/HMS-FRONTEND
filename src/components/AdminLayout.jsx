@@ -3,7 +3,6 @@ import { useAuth } from '../context/AuthContext';
 import {
   LayoutDashboard,
   Users,
-  UserPlus,
   Stethoscope,
   Settings,
   ImageIcon,
@@ -14,7 +13,6 @@ import {
 const SIDEBAR_LINKS = [
   { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/admin/patients', icon: Users, label: 'Patients' },
-  { to: '/admin/patients/new', icon: UserPlus, label: 'Add Patient' },
   { to: '/admin/doctors', icon: Stethoscope, label: 'Doctors' },
   { to: '/admin/pharmacy', icon: Pill, label: 'Pharmacy' },
   { to: '/admin/gallery', icon: ImageIcon, label: 'Gallery' },
