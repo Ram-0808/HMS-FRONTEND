@@ -48,15 +48,31 @@ export default function PharmacyDashboard() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="font-heading text-2xl font-bold text-gray-900">Pharmacy Dashboard</h1>
-        <Link
-          to="/admin/pharmacy/medicines/new"
-          className="flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
-        >
-          <Plus className="w-4 h-4" />
-          Add Medicine
-        </Link>
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <h1 className="font-heading text-2xl font-bold text-gray-900">Pharmacy</h1>
+        <div className="flex items-center gap-2 flex-wrap">
+          <Link
+            to="/admin/pharmacy/medicines/new"
+            className="flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Add Medicine
+          </Link>
+          <Link
+            to="/admin/pharmacy/batches/new"
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Add Stock
+          </Link>
+          <Link
+            to="/admin/pharmacy/sales/new"
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Record Sale
+          </Link>
+        </div>
       </div>
 
       {/* Stats Cards */}
