@@ -22,7 +22,7 @@ export default function PharmacyDashboard() {
         ]);
         setStats(statsRes.data);
         setLowStock(lowStockRes.data.results || lowStockRes.data);
-        setSales(salesRes.data.results || salesRes.data);
+        setRecentSales(salesRes.data.results || salesRes.data);
       } catch {
         // silently fail
       } finally {

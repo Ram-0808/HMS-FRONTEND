@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, UserCheck, IndianRupee, TrendingUp, UserPlus } from 'lucide-react';
+import { Users, UserCheck, IndianRupee, TrendingUp } from 'lucide-react';
 import StatCard from '../../components/StatCard';
 import API from '../../services/api';
 
@@ -47,13 +47,6 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-heading text-2xl font-bold text-gray-900">Dashboard</h1>
-        <Link
-          to="/admin/patients/new"
-          className="flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
-        >
-          <UserPlus className="w-4 h-4" />
-          Add Patient
-        </Link>
       </div>
 
       {/* Stats Cards */}
