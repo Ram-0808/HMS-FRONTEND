@@ -78,9 +78,11 @@ export default function PatientForm() {
   const validate = () => {
     const errs = {};
     if (!form.name.trim()) errs.name = 'Patient name is required';
-    if (!form.age || Number(form.age) < 0) errs.age = 'Valid age is required';
+    if (!form.age || Number(form.age) < 0) errs.age = 'Age is required';
+    if (Number(form.age) > 120) errs.age = 'Age must be under 120';
     if (!form.problem.trim()) errs.problem = 'Problem description is required';
     if (!form.fee_amount || Number(form.fee_amount) < 0) errs.fee_amount = 'Fee amount is required';
+    if (form.phone && !/^\d{10}$/.test(form.phone)) errs.phone = 'Phone must be exactly 10 digits';
     return errs;
   };
 
@@ -226,9 +228,13 @@ export default function PatientForm() {
                 name="phone"
                 value={form.phone}
                 onChange={handleChange}
-                placeholder="Phone number"
-                className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+                placeholder="10-digit phone number"
+                maxLength={10}
+                className={`w-full px-4 py-2.5 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition ${
+                  errors.phone ? 'border-red-300' : 'border-gray-200'
+                }`}
               />
+              {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
             </div>
 
             {/* Address */}

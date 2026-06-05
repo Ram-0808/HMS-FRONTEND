@@ -57,6 +57,9 @@ export default function VendorForm() {
   const validate = () => {
     const errs = {};
     if (!form.name.trim()) errs.name = 'Vendor name is required';
+    if (form.phone && !/^\d{10}$/.test(form.phone)) errs.phone = 'Phone must be exactly 10 digits';
+    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) errs.email = 'Enter a valid email address';
+    if (form.gst_number && !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(form.gst_number.toUpperCase())) errs.gst_number = 'Enter a valid 15-character GST number (e.g. 29AABCU9603R1ZM)';
     return errs;
   };
 
@@ -174,9 +177,13 @@ export default function VendorForm() {
                   name="phone"
                   value={form.phone}
                   onChange={handleChange}
-                  placeholder="e.g. 9876543210"
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+                  placeholder="10-digit phone"
+                  maxLength={10}
+                  className={`w-full px-4 py-2.5 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition ${
+                    errors.phone ? 'border-red-300' : 'border-gray-200'
+                  }`}
                 />
+                {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
               </div>
             </div>
 
@@ -192,8 +199,11 @@ export default function VendorForm() {
                   value={form.email}
                   onChange={handleChange}
                   placeholder="e.g. info@medpharm.com"
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+                  className={`w-full px-4 py-2.5 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition ${
+                    errors.email ? 'border-red-300' : 'border-gray-200'
+                  }`}
                 />
+                {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -205,8 +215,12 @@ export default function VendorForm() {
                   value={form.gst_number}
                   onChange={handleChange}
                   placeholder="e.g. 29AABCU9603R1ZM"
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+                  maxLength={15}
+                  className={`w-full px-4 py-2.5 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition ${
+                    errors.gst_number ? 'border-red-300' : 'border-gray-200'
+                  }`}
                 />
+                {errors.gst_number && <p className="text-xs text-red-500 mt-1">{errors.gst_number}</p>}
               </div>
             </div>
 

@@ -82,7 +82,8 @@ export default function MedicineForm() {
   const validate = () => {
     const errs = {};
     if (!form.name.trim()) errs.name = 'Medicine name is required';
-    if (!form.selling_price || Number(form.selling_price) < 0) errs.selling_price = 'Valid selling price is required';
+    if (!form.selling_price || Number(form.selling_price) <= 0) errs.selling_price = 'Selling price must be greater than 0';
+    if (form.reorder_level && Number(form.reorder_level) < 0) errs.reorder_level = 'Reorder level cannot be negative';
     return errs;
   };
 
@@ -280,7 +281,7 @@ export default function MedicineForm() {
                   value={form.selling_price}
                   onChange={handleChange}
                   placeholder="0.00"
-                  min="0"
+                  min="0.01"
                   step="0.01"
                   className={`w-full px-4 py-2.5 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition ${
                     errors.selling_price ? 'border-red-300' : 'border-gray-200'
@@ -301,8 +302,11 @@ export default function MedicineForm() {
                   onChange={handleChange}
                   placeholder="10"
                   min="0"
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+                  className={`w-full px-4 py-2.5 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition ${
+                    errors.reorder_level ? 'border-red-300' : 'border-gray-200'
+                  }`}
                 />
+                {errors.reorder_level && <p className="text-xs text-red-500 mt-1">{errors.reorder_level}</p>}
               </div>
             </div>
           </div>
