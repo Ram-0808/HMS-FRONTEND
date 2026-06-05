@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save, AlertCircle } from 'lucide-react';
+import { Save, AlertCircle } from 'lucide-react';
+import BackButton from '../../../components/BackButton';
+import { useToast } from '../../../context/ToastContext';
 import API from '../../../services/api';
 
 const INITIAL_FORM = {
@@ -17,6 +19,7 @@ const INITIAL_FORM = {
 
 export default function BatchForm() {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
@@ -105,7 +108,7 @@ export default function BatchForm() {
         });
         setErrors(formatted);
       } else {
-        alert('Something went wrong. Please try again.');
+        toast('Something went wrong. Please try again.', 'error');
       }
     } finally {
       setLoading(false);
@@ -116,12 +119,7 @@ export default function BatchForm() {
     <div className="max-w-3xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="p-2 rounded-lg hover:bg-gray-100 text-gray-500 transition"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </button>
+        <BackButton to="/admin/pharmacy/batches" />
         <h1 className="font-heading text-2xl font-bold text-gray-900">Add New Purchase</h1>
       </div>
 

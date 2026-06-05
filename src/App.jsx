@@ -73,10 +73,10 @@ export default function App() {
         <Route path="pharmacy/vendors" element={<VendorList />} />
         <Route path="pharmacy/vendors/new" element={<VendorForm />} />
         <Route path="pharmacy/vendors/:id/edit" element={<VendorForm />} />
-        <Route path="pharmacy/batches" element={<BatchList />} />
         <Route path="pharmacy/batches/new" element={<BatchForm />} />
-        <Route path="pharmacy/sales" element={<SaleList />} />
+        <Route path="pharmacy/batches" element={<BatchList />} />
         <Route path="pharmacy/sales/new" element={<SaleForm />} />
+        <Route path="pharmacy/sales" element={<SaleList />} />
       </Route>
     </Routes>
   );

@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save, AlertCircle } from 'lucide-react';
+import { Save, AlertCircle } from 'lucide-react';
+import BackButton from '../../../components/BackButton';
+import { useToast } from '../../../context/ToastContext';
 import API from '../../../services/api';
 
 export default function SaleForm() {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [form, setForm] = useState({
     medicine: '',
@@ -15,7 +18,6 @@ export default function SaleForm() {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState('');
 
   // Dropdown data
   const [medicines, setMedicines] = useState([]);
@@ -177,10 +179,8 @@ export default function SaleForm() {
 
     try {
       await API.post('/pharmacy/sales/', payload);
-      setSuccess('Sale recorded successfully!');
-      setTimeout(() => {
-        navigate('/admin/pharmacy/sales');
-      }, 1500);
+      toast('Sale recorded successfully!', 'success');
+      navigate('/admin/pharmacy/sales');
     } catch (err) {
       const serverErrors = err.response?.data;
       if (serverErrors) {
@@ -190,7 +190,7 @@ export default function SaleForm() {
         });
         setErrors(formatted);
       } else {
-        alert('Something went wrong. Please try again.');
+        toast('Something went wrong. Please try again.', 'error');
       }
     } finally {
       setLoading(false);
@@ -201,24 +201,9 @@ export default function SaleForm() {
     <div className="max-w-3xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="p-2 rounded-lg hover:bg-gray-100 text-gray-500 transition"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </button>
+        <BackButton to="/admin/pharmacy/sales" />
         <h1 className="font-heading text-2xl font-bold text-gray-900">Record Sale</h1>
       </div>
-
-      {/* Success message */}
-      {success && (
-        <div className="bg-green-50 border border-green-200 text-green-700 rounded-xl p-4 mb-6 flex items-center gap-2">
-          <svg className="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-          </svg>
-          {success}
-        </div>
-      )}
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8">

@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { Search, Users, Pencil, Trash2, ChevronLeft, ChevronRight, Phone, Mail } from 'lucide-react';
 import API from '../../../services/api';
 import ViewToggle from '../../../components/ViewToggle';
+import { useToast } from '../../../context/ToastContext';
 
 export default function VendorList() {
+  const toast = useToast();
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('list');
@@ -50,7 +52,7 @@ export default function VendorList() {
       await API.delete(`/pharmacy/vendors/${id}/`);
       fetchVendors();
     } catch {
-      alert('Failed to delete. Please try again.');
+      toast('Failed to delete vendor. Please try again.', 'error');
     }
   };
 

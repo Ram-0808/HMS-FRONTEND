@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Search, Pill, Pencil, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 import API from '../../../services/api';
 import ViewToggle from '../../../components/ViewToggle';
+import { useToast } from '../../../context/ToastContext';
 
 const CATEGORY_OPTIONS = [
   { value: '', label: 'All Categories' },
@@ -23,6 +24,7 @@ const STOCK_STATUS_OPTIONS = [
 ];
 
 export default function MedicineList() {
+  const toast = useToast();
   const [medicines, setMedicines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('list');
@@ -72,7 +74,7 @@ export default function MedicineList() {
       await API.delete(`/pharmacy/medicines/${id}/`);
       fetchMedicines();
     } catch {
-      alert('Failed to delete. Please try again.');
+      toast('Failed to delete medicine. Please try again.', 'error');
     }
   };
 

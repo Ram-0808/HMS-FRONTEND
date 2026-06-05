@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Save, AlertCircle } from 'lucide-react';
+import { Save, AlertCircle } from 'lucide-react';
+import BackButton from '../../../components/BackButton';
+import { useToast } from '../../../context/ToastContext';
 import API from '../../../services/api';
 
 const CATEGORY_OPTIONS = [
@@ -40,6 +42,7 @@ export default function MedicineForm() {
   const { id } = useParams();
   const isEdit = Boolean(id);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
@@ -64,7 +67,7 @@ export default function MedicineForm() {
           is_active: data.is_active ?? true,
         });
       } catch {
-        alert('Failed to load medicine data.');
+        toast('Failed to load medicine data.', 'error');
         navigate('/admin/pharmacy/medicines');
       } finally {
         setFetching(false);
@@ -118,7 +121,7 @@ export default function MedicineForm() {
         });
         setErrors(formatted);
       } else {
-        alert('Something went wrong. Please try again.');
+        toast('Something went wrong. Please try again.', 'error');
       }
     } finally {
       setLoading(false);
@@ -137,12 +140,7 @@ export default function MedicineForm() {
     <div className="max-w-3xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="p-2 rounded-lg hover:bg-gray-100 text-gray-500 transition"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </button>
+        <BackButton to="/admin/pharmacy/medicines" />
         <h1 className="font-heading text-2xl font-bold text-gray-900">
           {isEdit ? 'Edit Medicine' : 'Add New Medicine'}
         </h1>

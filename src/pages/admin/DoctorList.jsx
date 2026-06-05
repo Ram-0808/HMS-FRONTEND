@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { User, Pencil, Trash2, Search, UserPlus, ChevronLeft, ChevronRight } from 'lucide-react';
 import API from '../../services/api';
 import ViewToggle from '../../components/ViewToggle';
+import { useToast } from '../../context/ToastContext';
 
 export default function DoctorList() {
+  const toast = useToast();
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -44,7 +46,7 @@ export default function DoctorList() {
       await API.delete(`/doctors/${id}/`);
       fetchDoctors();
     } catch {
-      alert('Failed to delete. Please try again.');
+      toast('Failed to remove doctor. Please try again.', 'error');
     }
   };
 

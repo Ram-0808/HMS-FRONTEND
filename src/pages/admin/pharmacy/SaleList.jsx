@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { Search, ShoppingCart, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 import API from '../../../services/api';
 import ViewToggle from '../../../components/ViewToggle';
+import { useToast } from '../../../context/ToastContext';
 
 export default function SaleList() {
+  const toast = useToast();
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalRevenue, setTotalRevenue] = useState(0);
@@ -69,7 +71,7 @@ export default function SaleList() {
       await API.delete(`/pharmacy/sales/${id}/`);
       fetchSales();
     } catch {
-      alert('Failed to delete. Please try again.');
+      toast('Failed to delete sale. Please try again.', 'error');
     }
   };
 

@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { Search, Package, Pencil, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 import API from '../../../services/api';
 import ViewToggle from '../../../components/ViewToggle';
+import { useToast } from '../../../context/ToastContext';
 
 export default function BatchList() {
+  const toast = useToast();
   const [batches, setBatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('list');
@@ -52,7 +54,7 @@ export default function BatchList() {
       await API.delete(`/pharmacy/batches/${id}/`);
       fetchBatches();
     } catch {
-      alert('Failed to delete. Please try again.');
+      toast('Failed to delete batch. Please try again.', 'error');
     }
   };
 
