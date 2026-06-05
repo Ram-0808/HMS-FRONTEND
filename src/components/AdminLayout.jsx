@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -8,13 +9,27 @@ import {
   ImageIcon,
   LogOut,
   Pill,
+  ChevronDown,
+  ChevronRight,
+  ShoppingCart,
+  Package,
+  Truck,
 } from 'lucide-react';
 
-const SIDEBAR_LINKS = [
+const NAV_ITEMS = [
   { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/admin/patients', icon: Users, label: 'Patients' },
   { to: '/admin/doctors', icon: Stethoscope, label: 'Doctors' },
-  { to: '/admin/pharmacy', icon: Pill, label: 'Pharmacy' },
+];
+
+const PHARMACY_ITEMS = [
+  { to: '/admin/pharmacy/vendors', icon: Truck, label: 'Vendors' },
+  { to: '/admin/pharmacy/medicines', icon: Pill, label: 'Medicines' },
+  { to: '/admin/pharmacy/batches', icon: Package, label: 'Stock / Purchases' },
+  { to: '/admin/pharmacy/sales', icon: ShoppingCart, label: 'Record Sale' },
+];
+
+const BOTTOM_ITEMS = [
   { to: '/admin/gallery', icon: ImageIcon, label: 'Gallery' },
   { to: '/admin/settings', icon: Settings, label: 'Settings' },
 ];
@@ -22,6 +37,10 @@ const SIDEBAR_LINKS = [
 export default function AdminLayout() {
   const { logout } = useAuth();
   const navigate = useNavigate();
+
+  const [pharmacyOpen, setPharmacyOpen] = useState(() =>
+    window.location.pathname.startsWith('/admin/pharmacy')
+  );
 
   const handleLogout = () => {
     logout();
@@ -33,7 +52,7 @@ export default function AdminLayout() {
       {/* Sidebar */}
       <aside className="hidden md:flex w-60 bg-primary-900 flex-col fixed inset-y-0">
         {/* Logo */}
-        <div className="h-18 flex items-center gap-2.5 px-5 border-b border-primary-800">
+        <div className="h-18 flex items-center gap-2.5 px-5 border-b border-primary-800 shrink-0">
           <img
             src="/logo.png"
             alt="Swarna Hospitals"
@@ -47,28 +66,92 @@ export default function AdminLayout() {
           </div>
         </div>
 
-        {/* Nav links */}
-        <nav className="flex-1 px-3 py-4 space-y-1">
-          {SIDEBAR_LINKS.map(({ to, icon: Icon, label }) => (
-            <NavLink
-              key={to}
-              to={to}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                  isActive
-                    ? 'bg-primary-800 text-white'
-                    : 'text-primary-200 hover:bg-primary-800/50 hover:text-white'
-                }`
-              }
+        {/* Nav — space-between: top items at top, bottom items at bottom */}
+        <nav className="flex-1 flex flex-col justify-between px-3 py-4">
+          {/* Top section */}
+          <div className="flex flex-col gap-0.5">
+            {NAV_ITEMS.map(({ to, icon: Icon, label }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                    isActive
+                      ? 'bg-primary-800 text-white'
+                      : 'text-primary-200 hover:bg-primary-800/50 hover:text-white'
+                  }`
+                }
+              >
+                <Icon className="w-5 h-5" />
+                {label}
+              </NavLink>
+            ))}
+
+            {/* Pharmacy collapsible */}
+            <button
+              onClick={() => setPharmacyOpen((v) => !v)}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                pharmacyOpen
+                  ? 'bg-primary-800 text-white'
+                  : 'text-primary-200 hover:bg-primary-800/50 hover:text-white'
+              }`}
             >
-              <Icon className="w-5 h-5" />
-              {label}
-            </NavLink>
-          ))}
+              <Pill className="w-5 h-5" />
+              <span className="flex-1 text-left">Pharmacy</span>
+              {pharmacyOpen ? (
+                <ChevronDown className="w-4 h-4 shrink-0" />
+              ) : (
+                <ChevronRight className="w-4 h-4 shrink-0" />
+              )}
+            </button>
+
+            {pharmacyOpen && (
+              <div className="flex flex-col gap-0.5 pl-3">
+                {PHARMACY_ITEMS.map(({ to, icon: Icon, label }) => (
+                  <NavLink
+                    key={to}
+                    to={to}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 pl-4 pr-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                        isActive
+                          ? 'bg-primary-700 text-white'
+                          : 'text-primary-300 hover:bg-primary-800/50 hover:text-white'
+                      }`
+                    }
+                  >
+                    <Icon className="w-4 h-4 shrink-0" />
+                    {label}
+                  </NavLink>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Bottom section */}
+          <div className="flex flex-col gap-0.5 mt-4">
+            {BOTTOM_ITEMS.map(({ to, icon: Icon, label }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                    isActive
+                      ? 'bg-primary-800 text-white'
+                      : 'text-primary-200 hover:bg-primary-800/50 hover:text-white'
+                  }`
+                }
+              >
+                <Icon className="w-5 h-5" />
+                {label}
+              </NavLink>
+            ))}
+          </div>
         </nav>
 
         {/* Logout */}
-        <div className="px-3 py-4 border-t border-primary-800">
+        <div className="px-3 py-4 border-t border-primary-800 shrink-0">
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-primary-300 hover:bg-primary-800 hover:text-white transition-all"
@@ -79,11 +162,9 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      {/* Main content area */}
+      {/* Main content */}
       <div className="flex-1 md:ml-60">
-        {/* Top header */}
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 sticky top-0 z-40">
-          {/* Mobile menu — simple logo + logout */}
           <div className="md:hidden flex items-center gap-2">
             <img src="/logo.png" alt="" className="w-7 h-7 rounded-full object-cover" />
             <span className="font-heading text-lg font-semibold text-primary-900">Swarna</span>
@@ -96,13 +177,26 @@ export default function AdminLayout() {
             <LogOut className="w-4 h-4" />
             Logout
           </button>
-
-          {/* Mobile nav pills */}
         </header>
 
         {/* Mobile bottom nav */}
         <nav className="md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 z-50 flex">
-          {SIDEBAR_LINKS.map(({ to, icon: Icon, label }) => (
+          {NAV_ITEMS.map(({ to, icon: Icon, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end
+              className={({ isActive }) =>
+                `flex-1 flex flex-col items-center py-2 text-[10px] font-medium transition ${
+                  isActive ? 'text-primary-600' : 'text-gray-400'
+                }`
+              }
+            >
+              <Icon className="w-5 h-5 mb-0.5" />
+              {label}
+            </NavLink>
+          ))}
+          {PHARMACY_ITEMS.map(({ to, icon: Icon, label }) => (
             <NavLink
               key={to}
               to={to}
@@ -118,7 +212,6 @@ export default function AdminLayout() {
           ))}
         </nav>
 
-        {/* Page content */}
         <div className="p-6 pb-24 md:pb-6">
           <Outlet />
         </div>
