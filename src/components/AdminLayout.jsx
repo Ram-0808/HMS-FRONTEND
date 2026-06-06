@@ -66,8 +66,8 @@ export default function AdminLayout() {
           </div>
         </div>
 
-        {/* Nav — space-between: top items at top, bottom items at bottom */}
-        <nav className="flex-1 flex flex-col justify-between px-3 py-4">
+        {/* Nav */}
+        <nav className="flex-1 flex flex-col px-3 py-4 overflow-y-auto">
           {/* Top section */}
           <div className="flex flex-col gap-0.5">
             {NAV_ITEMS.map(({ to, icon: Icon, label }) => (
@@ -129,7 +129,7 @@ export default function AdminLayout() {
           </div>
 
           {/* Bottom section */}
-          <div className="flex flex-col gap-0.5 mt-4">
+          <div className="flex flex-col gap-0.5 pt-4">
             {BOTTOM_ITEMS.map(({ to, icon: Icon, label }) => (
               <NavLink
                 key={to}
