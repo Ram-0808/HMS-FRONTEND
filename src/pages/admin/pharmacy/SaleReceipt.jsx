@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { Printer, Download, ArrowLeft, Receipt } from 'lucide-react';
 import API from '../../../services/api';
 import useSiteSettings from '../../../utils/useSiteSettings';
@@ -9,20 +9,29 @@ export default function SaleReceipt() {
   const { settings } = useSiteSettings();
   const [sale, setSale] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const receiptRef = useRef(null);
 
   useEffect(() => {
+    if (!id) return;
+    let cancelled = false;
+
     async function fetchSale() {
+      setLoading(true);
+      // Brief delay to ensure backend transaction is committed
+      await new Promise((r) => setTimeout(r, 400));
+      if (cancelled) return;
       try {
         const { data } = await API.get(`/pharmacy/sales/${id}/`);
-        setSale(data);
+        if (!cancelled) setSale(data);
       } catch {
-        setSale(null);
+        if (!cancelled) setError(true);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
     fetchSale();
+    return () => { cancelled = true; };
   }, [id]);
 
   const handlePrint = () => {
@@ -74,7 +83,7 @@ export default function SaleReceipt() {
     return (
       <div className="text-center py-20 text-gray-400">
         <Receipt className="w-12 h-12 mx-auto mb-3 opacity-50" />
-        <p>Sale record not found.</p>
+        <p>{error ? 'Failed to load receipt.' : 'Sale record not found.'}</p>
         <Link to="/admin/pharmacy/sales" className="text-primary-600 text-sm font-medium mt-2 inline-block">
           Back to Sales
         </Link>

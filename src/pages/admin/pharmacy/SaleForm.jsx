@@ -178,9 +178,8 @@ export default function SaleForm() {
     };
 
     try {
-      const { data } = await API.post('/pharmacy/sales/', payload);
-      toast('Sale recorded successfully!', 'success');
-      navigate(`/admin/pharmacy/sales/${data.id}/receipt`);
+      await API.post('/pharmacy/sales/', payload);
+      navigate('/admin/pharmacy/sales');
     } catch (err) {
       const serverErrors = err.response?.data;
       if (serverErrors) {
@@ -192,7 +191,6 @@ export default function SaleForm() {
       } else {
         toast('Something went wrong. Please try again.', 'error');
       }
-    } finally {
       setLoading(false);
     }
   };
