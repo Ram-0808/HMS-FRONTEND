@@ -16,13 +16,16 @@ const ICON_BG = {
 
 export default function StatCard({ icon: Icon, value, label, color = 'primary' }) {
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 group">
-      <div className={`w-13 h-13 rounded-2xl bg-gradient-to-br ${GRADIENTS[color]} flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow`}>
-        <Icon className="w-6 h-6 text-white" />
+    <div className="relative bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4 overflow-hidden group hover:shadow-xl hover:shadow-gray-200/50 hover:-translate-y-1 transition-all duration-300">
+      {/* Subtle gradient background accent */}
+      <div className={`absolute top-0 right-0 w-24 h-24 rounded-full bg-gradient-to-br ${GRADIENTS[color]} opacity-5 -translate-y-6 translate-x-6 group-hover:opacity-10 transition-opacity`} />
+      
+      <div className={`relative w-12 h-12 rounded-2xl bg-gradient-to-br ${GRADIENTS[color]} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+        <Icon className="w-5 h-5 text-white" />
       </div>
-      <div className="min-w-0">
+      <div className="min-w-0 relative">
         <p className="text-2xl font-bold text-gray-900 leading-none truncate">{value}</p>
-        <p className="text-sm text-gray-500 mt-1">{label}</p>
+        <p className="text-xs text-gray-500 mt-1.5 font-medium">{label}</p>
       </div>
     </div>
   );

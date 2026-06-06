@@ -50,17 +50,17 @@ export default function AdminLayout() {
   return (
     <div className="min-h-screen flex bg-gray-50">
       {/* Sidebar */}
-      <aside className="hidden md:flex w-60 bg-primary-900 flex-col fixed inset-y-0">
+      <aside className="hidden md:flex w-64 bg-gradient-to-b from-primary-950 via-primary-900 to-primary-950 flex-col fixed inset-y-0 shadow-2xl">
         {/* Logo */}
-        <div className="h-18 flex items-center gap-2.5 px-5 border-b border-primary-800 shrink-0">
+        <div className="h-[68px] flex items-center gap-3 px-5 border-b border-primary-800/50 shrink-0">
           <img
             src="/logo.png"
             alt="Swarna Hospitals"
-            className="w-9 h-9 rounded-full object-cover bg-white/20 p-0.5"
+            className="w-10 h-10 rounded-full object-cover ring-2 ring-primary-700/50"
           />
           <div className="leading-tight">
-            <span className="font-heading text-lg font-semibold text-white block">Swarna</span>
-            <span className="text-[9px] uppercase tracking-[0.2em] text-primary-400 font-medium">
+            <span className="font-heading text-lg font-bold text-white block tracking-tight">Swarna</span>
+            <span className="text-[9px] uppercase tracking-[0.25em] text-primary-400 font-semibold">
               Admin Portal
             </span>
           </div>
@@ -163,13 +163,18 @@ export default function AdminLayout() {
       </aside>
 
       {/* Main content */}
-      <div className="flex-1 md:ml-60">
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 sticky top-0 z-40">
+      <div className="flex-1 md:ml-64">
+        <header className="h-[68px] bg-white/80 backdrop-blur-md border-b border-gray-200/60 flex items-center justify-between px-6 sticky top-0 z-40 shadow-sm">
           <div className="md:hidden flex items-center gap-2">
             <img src="/logo.png" alt="" className="w-7 h-7 rounded-full object-cover" />
             <span className="font-heading text-lg font-semibold text-primary-900">Swarna</span>
           </div>
-          <div className="hidden md:block text-sm text-gray-500">Welcome, Admin</div>
+          <div className="hidden md:flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
+              <span className="text-xs font-bold text-primary-700">A</span>
+            </div>
+            <span className="text-sm text-gray-600 font-medium">Welcome, Admin</span>
+          </div>
           <button
             onClick={handleLogout}
             className="md:hidden flex items-center gap-1.5 text-sm text-gray-500 hover:text-red-600"

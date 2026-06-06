@@ -1,10 +1,11 @@
 @import "tailwindcss";
 
 /* -------------------------------------------------------
-   Swarna Hospitals — Design System
+   Swarna Hospitals — Design System v2
+   Premium Healthcare UI
    ------------------------------------------------------- */
 @theme {
-  /* Primary: Teal */
+  /* Primary: Deep Teal */
   --color-primary-50: #f0fdfa;
   --color-primary-100: #ccfbf1;
   --color-primary-200: #99f6e4;
@@ -17,7 +18,7 @@
   --color-primary-900: #134e4a;
   --color-primary-950: #042f2e;
 
-  /* Accent: Amber */
+  /* Accent: Warm Amber */
   --color-accent-50: #fffbeb;
   --color-accent-100: #fef3c7;
   --color-accent-200: #fde68a;
@@ -41,9 +42,31 @@ html {
 body {
   font-family: var(--font-body);
   color: #1e293b;
-  background: #ffffff;
+  background: #fafbfc;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Refined selection color */
+::selection {
+  background: #ccfbf1;
+  color: #0f766e;
+}
+
+/* Better scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 /* -------------------------------------------------------
@@ -53,11 +76,23 @@ body {
   font-family: var(--font-heading);
 }
 
+/* Shimmer effect for loading states */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@utility animate-shimmer {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
 /* Fade-in animation for page sections */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -66,22 +101,108 @@ body {
 }
 
 @utility animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
+  animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+/* Slide up for toasts and modals */
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @utility animate-slide-up {
-  animation: slideUp 0.3s ease-out forwards;
+  animation: slideUp 0.25s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Gentle pulse for attention */
+@keyframes gentlePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@utility animate-gentle-pulse {
+  animation: gentlePulse 2s ease-in-out infinite;
+}
+
+/* Float animation for decorative elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@utility animate-float {
+  animation: float 3s ease-in-out infinite;
 }
 
 /* Stagger children animation delays */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
 .stagger-children > *:nth-child(1) { animation-delay: 0ms; }
-.stagger-children > *:nth-child(2) { animation-delay: 100ms; }
-.stagger-children > *:nth-child(3) { animation-delay: 200ms; }
-.stagger-children > *:nth-child(4) { animation-delay: 300ms; }
-.stagger-children > *:nth-child(5) { animation-delay: 400ms; }
-.stagger-children > *:nth-child(6) { animation-delay: 500ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 80ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 160ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 320ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 400ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 480ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 560ms; }
+
+/* -------------------------------------------------------
+   Glass morphism utility
+   ------------------------------------------------------- */
+@utility glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@utility glass-dark {
+  background: rgba(19, 78, 74, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* -------------------------------------------------------
+   Enhanced card hover effects
+   ------------------------------------------------------- */
+@utility card-hover {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.12);
+  }
+}
+
+/* -------------------------------------------------------
+   Better focus rings
+   ------------------------------------------------------- */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+  border-color: #14b8a6;
+}
+
+/* -------------------------------------------------------
+   Table row hover animation
+   ------------------------------------------------------- */
+tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+/* -------------------------------------------------------
+   Button press effect
+   ------------------------------------------------------- */
+button:active:not(:disabled),
+a:active {
+  transform: scale(0.98);
+}
+
+/* -------------------------------------------------------
+   Smooth page transitions
+   ------------------------------------------------------- */
+main {
+  animation: fadeInUp 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}

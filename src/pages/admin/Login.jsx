@@ -31,21 +31,30 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-primary-950 via-primary-900 to-primary-800 flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-500/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary-600/5 rounded-full blur-3xl" />
+      </div>
+
+      <div className="w-full max-w-md relative">
         {/* Logo */}
         <div className="text-center mb-8">
-          <img
-            src="/logo.png"
-            alt="Swarna Hospitals"
-            className="w-16 h-16 rounded-full object-cover mx-auto mb-4"
-          />
-          <h1 className="font-heading text-2xl font-bold text-gray-900">Swarna Hospitals</h1>
-          <p className="text-sm text-gray-500 mt-1">Admin Portal — Sign in to continue</p>
+          <div className="inline-block p-1 rounded-full bg-white/10 backdrop-blur-sm mb-4">
+            <img
+              src="/logo.png"
+              alt="Swarna Hospitals"
+              className="w-16 h-16 rounded-full object-cover"
+            />
+          </div>
+          <h1 className="font-heading text-3xl font-bold text-white">Swarna Hospitals</h1>
+          <p className="text-sm text-primary-300 mt-2">Admin Portal — Sign in to continue</p>
         </div>
 
         {/* Login Card */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+        <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl shadow-black/20 border border-white/20 p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Error */}
             {error && (
@@ -99,7 +108,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white font-semibold py-3 rounded-lg transition-colors"
+              className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 disabled:from-primary-400 disabled:to-primary-400 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-primary-600/25 hover:shadow-xl hover:shadow-primary-600/30 hover:-translate-y-0.5"
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>

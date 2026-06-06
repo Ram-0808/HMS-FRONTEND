@@ -6,9 +6,9 @@ export default function Footer() {
   const { settings } = useSiteSettings();
 
   return (
-    <footer className="bg-primary-900 text-white">
+    <footer className="bg-gradient-to-b from-primary-900 via-primary-950 to-black text-white">
       {/* Main footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
           {/* Column 1: Brand */}
