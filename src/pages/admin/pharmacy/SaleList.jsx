@@ -31,10 +31,13 @@ export default function SaleList() {
       params.set('page', page);
 
       const { data } = await API.get(`/pharmacy/sales/?${params}`);
-      setSales(data.results || data);
-      const count = data.count || (data.results || data).length;
+      const salesData = data.results || data;
+      setSales(salesData);
+      const count = data.count || salesData.length;
       setTotalPages(Math.ceil(count / 20) || 1);
-      setTotalRevenue(data.total_revenue || 0);
+      // Calculate total from visible sales (API doesn't provide aggregate)
+      const revenue = salesData.reduce((sum, s) => sum + Number(s.total_amount || 0), 0);
+      setTotalRevenue(revenue);
     } catch {
       setSales([]);
       setTotalRevenue(0);
