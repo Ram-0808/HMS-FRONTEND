@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, ShoppingCart, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, ShoppingCart, Trash2, ChevronLeft, ChevronRight, Printer } from 'lucide-react';
 import API from '../../../services/api';
 import ViewToggle from '../../../components/ViewToggle';
 import { useToast } from '../../../context/ToastContext';
@@ -192,6 +192,13 @@ export default function SaleList() {
                         <td className="px-4 py-3 text-gray-600">&#8377;{Number(s.total || s.quantity * s.unit_price).toLocaleString('en-IN')}</td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
+                            <Link
+                              to={`/admin/pharmacy/sales/${s.id}/receipt`}
+                              className="p-1.5 rounded-lg hover:bg-primary-50 text-primary-600 transition"
+                              title="Print Receipt"
+                            >
+                              <Printer className="w-4 h-4" />
+                            </Link>
                             <button
                               onClick={() => handleDelete(s.id)}
                               className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition"
@@ -265,6 +272,13 @@ export default function SaleList() {
                         <span className="font-bold text-gray-900">&#8377;{Number(totalAmt).toLocaleString('en-IN')}</span>
                       </div>
                       <div className="flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
+                        <Link
+                          to={`/admin/pharmacy/sales/${s.id}/receipt`}
+                          className="p-1.5 rounded-lg hover:bg-primary-50 text-primary-600 transition"
+                          title="Print Receipt"
+                        >
+                          <Printer className="w-4 h-4" />
+                        </Link>
                         <button
                           onClick={() => handleDelete(s.id)}
                           className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition"

@@ -178,9 +178,9 @@ export default function SaleForm() {
     };
 
     try {
-      await API.post('/pharmacy/sales/', payload);
+      const { data } = await API.post('/pharmacy/sales/', payload);
       toast('Sale recorded successfully!', 'success');
-      navigate('/admin/pharmacy/sales');
+      navigate(`/admin/pharmacy/sales/${data.id}/receipt`);
     } catch (err) {
       const serverErrors = err.response?.data;
       if (serverErrors) {

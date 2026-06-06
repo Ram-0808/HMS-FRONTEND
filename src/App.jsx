@@ -30,6 +30,7 @@ import BatchList from './pages/admin/pharmacy/BatchList';
 import BatchForm from './pages/admin/pharmacy/BatchForm';
 import SaleList from './pages/admin/pharmacy/SaleList';
 import SaleForm from './pages/admin/pharmacy/SaleForm';
+import SaleReceipt from './pages/admin/pharmacy/SaleReceipt';
 
 export default function App() {
   return (
@@ -76,6 +77,7 @@ export default function App() {
         <Route path="pharmacy/batches/new" element={<BatchForm />} />
         <Route path="pharmacy/batches" element={<BatchList />} />
         <Route path="pharmacy/sales/new" element={<SaleForm />} />
+        <Route path="pharmacy/sales/:id/receipt" element={<SaleReceipt />} />
         <Route path="pharmacy/sales" element={<SaleList />} />
       </Route>
     </Routes>
