@@ -42,7 +42,7 @@ export default function ImageCarousel({ images, autoPlay = true, interval = 5000
       {/* Main carousel */}
       <div className="relative group rounded-2xl overflow-hidden shadow-xl">
         {/* Image */}
-        <div className="relative aspect-[16/7] md:aspect-[21/7] overflow-hidden bg-gray-100">
+        <div className="relative aspect-[16/9] md:aspect-[16/9] overflow-hidden bg-gray-100">
           <img
             src={activeImage.image}
             alt={activeImage.caption || `Slide ${current + 1}`}
